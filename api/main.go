@@ -1,30 +1,17 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"github.com/hmprgm/financial-planner/internal/env"
-	"github.com/joho/godotenv"
+  "net/http"
+
+  "github.com/gin-gonic/gin"
 )
 
-const version = "0.0.1"
-
-func setupDotEnv() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-}
-
 func main() {
-
-	setupDotEnv()
-	addr := env.GetString("ADDR", ":8080")
-
-	srv := http.Server{
-		Addr: addr,
-	}
-
-	log.Fatal(srv.ListenAndServe())
-	log.Printf("Server started on %s", addr)
+  r := gin.Default()
+  r.GET("/ping", func(c *gin.Context) {
+    c.JSON(http.StatusOK, gin.H{
+      "message": "pong",
+    })
+  })
+  r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
