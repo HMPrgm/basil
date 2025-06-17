@@ -1,17 +1,26 @@
 package main
 
 import (
-  "net/http"
+	"net/http"
 
-  "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-  r := gin.Default()
-  r.GET("/ping", func(c *gin.Context) {
-    c.JSON(http.StatusOK, gin.H{
-      "message": "pong",
-    })
-  })
-  r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	r := gin.Default()
+
+	r.POST("/login", Login)
+
+	authorized := r.Group("/admin")
+	authorized.Use(AuthMiddleware())
+	{
+		authorized.GET("/data", func(c *gin.Context) {
+			username, _ := c.Get("username")
+			c.JSON(http.StatusOK, gin.H{"message": "This is protected data for " + username.(string)})
+		})
+	}
+
+	r.Run(":8080")
 }
+
+// login, logout, me handlers omitted for brevity
