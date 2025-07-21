@@ -33,6 +33,7 @@ func (app *application) mount() *gin.Engine {
 	// Protected routes
 	protected := r.Group("/api")
 	protected.Use(JWTAuthMiddleware())
+	protected.GET("/user", app.getUserInfo)
 
 	return r
 }

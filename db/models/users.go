@@ -74,3 +74,11 @@ func (m *UserModel) Login(username, password string) (string, error) {
 	return token, nil
 }
 
+func (m *UserModel) GetByID(userID primitive.ObjectID) (*User, error) {
+	var user User
+	err := m.collection.FindOne(context.TODO(), map[string]any{"_id": userID}).Decode(&user)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}

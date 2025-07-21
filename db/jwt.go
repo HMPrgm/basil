@@ -22,3 +22,22 @@ func ValidateJWT(tokenString string) (*jwt.Token, error) {
 		return jwtKey, nil
 	})
 }
+
+func GetUserIDFromToken(token *jwt.Token) (primitive.ObjectID, error) {
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		return primitive.ObjectID{}, jwt.ErrSignatureInvalid
+	}
+
+	userIDHex, ok := claims["user_id"].(string)
+	if !ok {
+		return primitive.ObjectID{}, jwt.ErrSignatureInvalid
+	}
+
+	userID, err := primitive.ObjectIDFromHex(userIDHex)
+	if err != nil {
+		return primitive.ObjectID{}, err
+	}
+
+	return userID, nil
+}
