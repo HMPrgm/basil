@@ -3,8 +3,7 @@ package main
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"github.com/hmprgm/financial-planner/db"
-	"github.com/golang-jwt/jwt/v5"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func (app *application) login(c *gin.Context) {
@@ -53,8 +52,8 @@ func (app *application) register(c *gin.Context) {
 }
 
 func (app *application) getUserInfo(c *gin.Context) {
-	userID, err := db.GetUserIDFromToken(c.Request.Context().Value("token").(*jwt.Token))
-	if err != nil {
+	userID := c.MustGet("userID").(primitive.ObjectID)
+	if userID == primitive.NilObjectID {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
 	}

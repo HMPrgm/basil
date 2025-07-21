@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-    "context"
 	"net/http"
 	"strings"
     "github.com/hmprgm/financial-planner/db"
@@ -23,8 +22,13 @@ func JWTAuthMiddleware() gin.HandlerFunc {
             c.Abort()
             return
         }
-        // Store the token in the context for later use
-        c.Request = c.Request.WithContext(context.WithValue(c.Request.Context(), "token", token))
+        userID, err := db.GetUserIDFromToken(token)
+        if err != nil {
+            c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+            c.Abort()
+            return
+        }
+        c.Set("userID", userID)
         c.Next()
     }
 }
