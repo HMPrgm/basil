@@ -1,17 +1,31 @@
 package main
 
 import (
-  "net/http"
-
-  "github.com/gin-gonic/gin"
+	"log"
+	"github.com/hmprgm/financial-planner/db"
+	"github.com/hmprgm/financial-planner/db/models"
 )
 
 func main() {
-  r := gin.Default()
-  r.GET("/ping", func(c *gin.Context) {
-    c.JSON(http.StatusOK, gin.H{
-      "message": "pong",
-    })
-  })
-  r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+
+	cfg := config{
+		addr: ":8080",
+	}
+	
+	mongoClient, err := db.New()
+	if err != nil {
+		log.Fatal("Could not connect to MongoDB: ", err)
+	}
+	log.Println("MongoDB connection established")
+
+	store := models.NewMongoStore(mongoClient)
+	app := &application{
+		config: cfg,
+		store:  store,
+	}
+	
+	r := app.mount()
+
+	log.Fatal(app.run(r))
 }
+
