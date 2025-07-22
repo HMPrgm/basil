@@ -4,12 +4,14 @@ import (
 	"log"
 	"github.com/hmprgm/financial-planner/db"
 	"github.com/hmprgm/financial-planner/db/models"
+
 )
 
 func main() {
 
 	cfg := config{
 		addr: ":8080",
+		frontend: "http://localhost:5173",
 	}
 	
 	mongoClient, err := db.New()
@@ -23,6 +25,8 @@ func main() {
 		config: cfg,
 		store:  store,
 	}
+
+	
 	
 	r := app.mount()
 

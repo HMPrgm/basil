@@ -2,7 +2,9 @@ package main
 
 import (
 	"log"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/hmprgm/financial-planner/db/models"
 )
@@ -13,11 +15,21 @@ type application struct {
 }
 
 type config struct {
-	addr string
+	addr     string
+	frontend string
 }
 
 func (app *application) mount() *gin.Engine {
 	r := gin.Default()
+
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{app.config.frontend},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	// Public routes
 	r.GET("/", func(c *gin.Context) {
