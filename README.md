@@ -15,7 +15,7 @@ I've always wanted to create a platform similar to Mint, and so Basil was born. 
 ## Tech Stack
 Frontend: Svelte with SvelteKit
 UI Framework: Tailwind CSS & [Shadcn/ui](https://www.shadcn-svelte.com/)
-Backend: Node.js with Express.js
+Backend: Go with Gin
 Database: MongoDB
 Bank Integration: [Plaid API](https://plaid.com/)
 ## Getting Started (for devs)
