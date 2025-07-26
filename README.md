@@ -1,5 +1,5 @@
 # Basil
-An open-source, self-hostable personal finance tracker to take control of your financial data. Built for those who miss Mint.com.
+An open-source personal finance tracker to take control of your financial data. Built for those who miss Mint.com.
 ## The End of an Era, The Start of a New One
 In late 2023, Intuit announced the shutdown of Mint.com, a beloved personal finance app that helped millions of users manage their money for over a decade. Many of us relied on Mint for its simple interface and powerful aggregation features.
 
