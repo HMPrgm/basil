@@ -13,11 +13,11 @@ I've always wanted to create a platform similar to Mint, and so Basil was born. 
 - Financial Goals: Set and track savings goals for things like a down payment, a new car, or an emergency fund.
 - Custom Alerts: Get notified about large transactions, upcoming bills, or when you're nearing a budget limit.
 ## Tech Stack
-Frontend: Svelte with SvelteKit
-UI Framework: Tailwind CSS & [Shadcn/ui](https://www.shadcn-svelte.com/)
-Backend: Go with Gin
-Database: MongoDB
-Bank Integration: [Plaid API](https://plaid.com/)
+- Frontend: Svelte with SvelteKit
+- UI Framework: Tailwind CSS & [Shadcn/ui](https://www.shadcn-svelte.com/)
+- Backend: Go with Gin
+- Database: MongoDB
+- Bank Integration: [Plaid API](https://plaid.com/)
 ## Getting Started (for devs)
 ### Requirements
 - Node.js
