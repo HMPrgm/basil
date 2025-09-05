@@ -15,7 +15,7 @@
         >Log In</a
       >
       <a
-        href="/signup"
+        href="/register"
         class="bg-emerald-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-emerald-700 transition-colors"
       >
         Sign Up Free
