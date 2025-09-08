@@ -4,7 +4,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/hmprgm/financial-planner/db"
 	"context"
 	"time"
 )
@@ -18,6 +17,14 @@ type Expense struct {
 	Description string `bson:"description"`
 	CreatedAt primitive.DateTime `bson:"created_at"`
 	UpdatedAt primitive.DateTime `bson:"updated_at"`
+}
+
+type ExpenseOutput struct {
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Amount      float64            `bson:"amount" json:"amount"`
+	Category    string             `bson:"category" json:"category"`
+	Date       primitive.DateTime  `bson:"date" json:"date"`
+	Description string             `bson:"description" json:"description"`
 }
 
 type ExpenseModel struct {
@@ -38,7 +45,7 @@ func (m *ExpenseModel) Create(userID primitive.ObjectID, amount float64, categor
 	return err
 }
 
-func (m *ExpenseModel) GetByUserID(userID primitive.ObjectID) ([]*Expense, error) {
+func (m *ExpenseModel) GetByUserID(userID primitive.ObjectID) ([]*ExpenseOutput, error) {
 	filter := map[string]any{"user_id": userID}
 	cursor, err := m.collection.Find(context.TODO(), filter)
 	if err != nil {
@@ -46,15 +53,15 @@ func (m *ExpenseModel) GetByUserID(userID primitive.ObjectID) ([]*Expense, error
 	}
 	defer cursor.Close(context.TODO())
 
-	var expenses []*Expense
+	var expenses []*ExpenseOutput
 	if err := cursor.All(context.TODO(), &expenses); err != nil {
 		return nil, err
 	}
 	return expenses, nil
 }
 
-func (m *ExpenseModel) GetByID(expenseID primitive.ObjectID) (*Expense, error) {
-	var expense Expense
+func (m *ExpenseModel) GetByID(expenseID primitive.ObjectID) (*ExpenseOutput, error) {
+	var expense ExpenseOutput
 	err := m.collection.FindOne(context.TODO(), map[string]any{"_id": expenseID}).Decode(&expense)
 	if err != nil {
 		return nil, err
@@ -62,7 +69,7 @@ func (m *ExpenseModel) GetByID(expenseID primitive.ObjectID) (*Expense, error) {
 	return &expense, nil
 }
 
-func (m *ExpenseModel) GetByCategory(userID primitive.ObjectID, category string) ([]*Expense, error) {
+func (m *ExpenseModel) GetByCategory(userID primitive.ObjectID, category string) ([]*ExpenseOutput, error) {
 	filter := map[string]any{"user_id": userID, "category": category}
 	cursor, err := m.collection.Find(context.TODO(), filter)
 	if err != nil {
@@ -70,7 +77,7 @@ func (m *ExpenseModel) GetByCategory(userID primitive.ObjectID, category string)
 	}
 	defer cursor.Close(context.TODO())
 
-	var expenses []*Expense
+	var expenses []*ExpenseOutput
 	if err := cursor.All(context.TODO(), &expenses); err != nil {
 		return nil, err
 	}

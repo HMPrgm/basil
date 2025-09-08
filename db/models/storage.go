@@ -12,11 +12,11 @@ type Storage struct {
 		GetByID(userID primitive.ObjectID) (*User, error)
 	}
 	Expenses interface {
-		Create(expense *Expense) error
-		GetByUserID(userID primitive.ObjectID) ([]*Expense, error)
-		GetByCategory(userID primitive.ObjectID, category string) ([]*Expense, error)
-		GetByID(expenseID primitive.ObjectID) (*Expense, error)
-		Update(expenseID primitive.ObjectID, expense *Expense) error
+		Create(userID primitive.ObjectID, amount float64, category string, description string) error
+		GetByUserID(userID primitive.ObjectID) ([]*ExpenseOutput, error)
+		GetByCategory(userID primitive.ObjectID, category string) ([]*ExpenseOutput, error)
+		GetByID(expenseID primitive.ObjectID) (*ExpenseOutput, error)
+		Update(expenseID primitive.ObjectID, amount float64, category string, description string) error
 		Delete(expenseID primitive.ObjectID) error
 	}
 

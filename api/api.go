@@ -47,6 +47,13 @@ func (app *application) mount() *gin.Engine {
 	protected.Use(JWTAuthMiddleware())
 	protected.GET("/user", app.getUserInfo)
 
+	// Expense routes
+	protected.POST("/expenses", app.createExpense)
+	protected.GET("/expenses", app.getExpenses)
+	protected.GET("/expenses/:id", app.getExpenseByID)
+	protected.PUT("/expenses/:id", app.updateExpense)
+	protected.DELETE("/expenses/:id", app.deleteExpense)
+
 	return r
 }
 
