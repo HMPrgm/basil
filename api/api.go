@@ -45,14 +45,14 @@ func (app *application) mount() *gin.Engine {
 	// Protected routes
 	protected := r.Group("/api")
 	protected.Use(JWTAuthMiddleware())
-	protected.GET("/user", app.getUserInfo)
 
-	// Expense routes
-	protected.POST("/expenses", app.createExpense)
-	protected.GET("/expenses", app.getExpenses)
-	protected.GET("/expenses/:id", app.getExpenseByID)
-	protected.PUT("/expenses/:id", app.updateExpense)
-	protected.DELETE("/expenses/:id", app.deleteExpense)
+	expenses := protected.Group("/expenses")
+
+	expenses.POST("/", app.createExpense)
+	expenses.GET("/", app.getExpenses)
+	expenses.GET("/:id", app.getExpenseByID)
+	expenses.PUT("/:id", app.updateExpense)
+	expenses.DELETE("/:id", app.deleteExpense)
 
 	return r
 }

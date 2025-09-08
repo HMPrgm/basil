@@ -3,7 +3,6 @@ package main
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func (app *application) login(c *gin.Context) {
@@ -49,22 +48,6 @@ func (app *application) register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"token": token})
-}
-
-func (app *application) getUserInfo(c *gin.Context) {
-	userID := c.MustGet("userID").(primitive.ObjectID)
-	if userID == primitive.NilObjectID {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
-		return
-	}
-
-	user, err := app.store.Users.GetByID(userID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
 
