@@ -64,3 +64,43 @@ func (app *application) getExpenseByID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, expense)
 }
+
+func (app *application) updateExpense(c *gin.Context) {
+	expenseID, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid expense ID"})
+		return
+	}
+
+	var input struct {
+		Amount      float64            `json:"amount"`
+		Category    string             `json:"category"`
+		Description string             `json:"description"`
+	}
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := app.store.Expenses.Update(expenseID, input.Amount, input.Category, input.Description); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Expense updated successfully"})
+}
+
+func (app *application) deleteExpense(c *gin.Context) {
+	expenseID, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid expense ID"})
+		return
+	}
+
+	if err := app.store.Expenses.Delete(expenseID); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Expense deleted successfully"})
+}
